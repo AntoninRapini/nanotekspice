@@ -10,6 +10,10 @@ CXXFLAGS += -Wall -Werror -Wextra
 CXXFLAGS += -I include/
 
 SRC	=	main.cpp	\
+		src/components/AComponent.cpp	\
+		src/components/Pin.cpp		\
+		src/components/Input.cpp	\
+		src/exceptions/Exceptions.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

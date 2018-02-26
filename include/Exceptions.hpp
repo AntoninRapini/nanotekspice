@@ -8,21 +8,27 @@
 #ifndef EXCEPTIONS_HPP_
 # define EXCEPTIONS_HPP_
 
+#include <string>
+#include <exception>
+
 namespace nts
 {
 	class NtsError : public std::exception
 	{
 	public:
 		NtsError(std::string const &message);
+		const char *what() const noexcept;
+	private:
+		std::string _message;
 	};
 
-	class PinError : public NtsError
+	class ComputeError : public NtsError
 	{
 	public:
-		PinError(std::string const &message);
+		ComputeError(std::string const &message);
 	};
 
-	class LinkError : public PinError
+	class LinkError : public NtsError
 	{
 	public:
 		LinkError(std::string const &message);
