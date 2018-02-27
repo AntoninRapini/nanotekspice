@@ -6,30 +6,52 @@
 //
 
 #include "Pin.hpp"
+#include "AComponent.hpp"
 
 namespace nts
 {	
-	Pin::Pin(Tristate value) : _value(value), _link(nullptr)
+	Pin::Pin(IComponent *owner, Type type, Tristate value) :
+		_owner(owner), _type(type), _value(value), _isbeingcomputed(false)
 	{
+		_index = ((AComponent *)_owner)->getPins().size();
 	}
 
-	nts::Tristate Pin::getValue() const
+	Tristate Pin::compute()
+	{
+		if (_value == Tristate::UNDEFINED)
+		{
+			if (_isbeingcomputed)
+			{
+				_isbeingcomputed = false;
+				_value = Tristate::UNDEFINED;
+			}
+			else
+			{
+				_isbeingcomputed = true;
+				_value = _owner->compute(_index);
+			}
+		}
+		return _value;
+	}
+	
+	Tristate Pin::getValue() const
 	{
 		return _value;
 	}
 
+
+	Pin::Type Pin::getType() const
+	{
+		return _type;
+	}
+	
 	void Pin::setValue(nts::Tristate value)
 	{
 		_value = value;
 	}
 
-	IComponent *Pin::getLink() const
+	const IComponent *Pin::getOwner() const
 	{
-		return _link;
-	}
-
-	void Pin::setLink(IComponent *link)
-	{
-		_link = link;
+		return _owner;
 	}
 }

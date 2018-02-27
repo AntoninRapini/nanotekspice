@@ -15,15 +15,25 @@ namespace nts
 	class Pin
 	{
 	public:
-		Pin(Tristate value = Tristate::UNDEFINED);
+		enum Type
+		{
+			INPUT,
+			OUTPUT,
+			IGNORED
+		};
+			Pin(IComponent *owner, Type type = Type::INPUT,
+			    Tristate value = Tristate::UNDEFINED);
+		Tristate compute();
 		Tristate getValue() const;
+		Type getType() const;
 		void setValue(nts::Tristate value);
-		IComponent *getLink() const;
-		void setLink(IComponent *link);
+		const IComponent *getOwner() const;
 	private:
-		bool _isoutput;
+		IComponent *_owner;
+		Type _type;
 		Tristate _value;
-		IComponent *_link;
+		size_t _index;
+		bool _isbeingcomputed;
 	};
 }
 

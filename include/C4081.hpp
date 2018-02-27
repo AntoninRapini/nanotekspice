@@ -5,20 +5,20 @@
 // 
 //
 
-#ifndef INPUT_HPP_
-# define INPUT_HPP_
+#ifndef C4081_HPP_
+# define C4081_HPP_
 
 #include "AComponent.hpp"
 
 namespace nts
 {
-	class Input : public AComponent
+	class C4081 : public AComponent
 	{
 	public:
-		Input(std::string name);
-		~Input();
+		C4081(std::string name);
+		~C4081();
 		Tristate compute(std::size_t pin = 1);
-	};
+	}
 }
 
-#endif /* !INPUT_HPP_ */
+#endif /* !C4081_HPP_ */

@@ -5,20 +5,20 @@
 // 
 //
 
-#ifndef INPUT_HPP_
-# define INPUT_HPP_
+#ifndef OUTPUT_HPP_
+# define OUTPUT_HPP_
 
 #include "AComponent.hpp"
 
 namespace nts
 {
-	class Input : public AComponent
+	class Output : public AComponent
 	{
 	public:
-		Input(std::string name);
-		~Input();
+		Output(std::string name);
+		~Output();
 		Tristate compute(std::size_t pin = 1);
 	};
 }
 
-#endif /* !INPUT_HPP_ */
+#endif /* !OUTPUT_HPP_ */

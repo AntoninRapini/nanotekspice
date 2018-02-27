@@ -5,20 +5,20 @@
 // 
 //
 
-#include "Input.hpp"
+#include "Clock.hpp"
 
 namespace nts
 {
-	Input::Input(std::string name) : AComponent(name, "Input")
+	Clock::Clock(std::string name) : AComponent(name, "Clock")
 	{
-		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
 	}
 
-	Input::~Input()
+	Clock::~Clock()
 	{
 	}
 	
-	Tristate Input::compute(std::size_t pin)
+	Tristate Clock::compute(std::size_t pin)
 	{
 		if (pin != 1)
 			throw(ComputeError("Requested pin index is out of range"));

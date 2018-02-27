@@ -1,0 +1,44 @@
+//
+// EPITECH PROJECT, 2018
+// 
+// File description:
+// 
+//
+
+#include "C4081.hpp"
+
+namespace nts
+{
+	C4081::C4081(std::string name) : AComponent(name, "4081")
+	{
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::IGNORED)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::IGNORED)));
+	}
+
+	C4081::~C4081()
+	{
+	}
+	
+	Tristate C4081::compute(std::size_t pin)
+	{
+		if (pin < 1 || pin > _pins.size())
+			throw(ComputeError("Requested pin index is out of range"));
+		if ((*_pins[pin - 1])._type == Pin::Type::IGNORED)
+			throw(ComputeError("Requested pin cannot be computed"));
+		if ((*_pins[pin - 1])._type == Pin::Type::INPUT)
+			return (*_pins[pin - 1]
+		return (*_pins[pin - 1]).getValue();
+	}
+}
