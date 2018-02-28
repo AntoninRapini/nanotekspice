@@ -18,7 +18,7 @@ namespace nts
 		C4081(std::string name);
 		~C4081();
 		Tristate compute(std::size_t pin = 1);
-	}
+	};
 }
 
 #endif /* !C4081_HPP_ */

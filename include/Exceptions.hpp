@@ -33,6 +33,12 @@ namespace nts
 	public:
 		LinkError(std::string const &message);
 	};
+
+	class SetError : public NtsError
+	{
+	public:
+		SetError(std::string const &message);
+	};
 }
 
 #endif /* !EXCEPTIONS_HPP_ */

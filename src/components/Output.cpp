@@ -6,6 +6,7 @@
 //
 
 #include "Output.hpp"
+#include <iostream>
 
 namespace nts
 {
@@ -21,14 +22,15 @@ namespace nts
 	Tristate Output::compute(std::size_t pin)
 	{
 		char state;
+		Tristate value;
 
-		_value = Tristate::UNDEFINED;
+		value = Tristate::UNDEFINED;
 		if (pin != 1)
 			throw(ComputeError("Requested pin index is out of range"));
-		if (*_pins[pin - 1].getOwner() != this)
-			_value = (*_pins[pin - 1]).compute();
-		state = _value == Tristate::UNDEFINED ? 'U' : _value == Tristate::TRUE ? '1' : '0';
+		if ((*_pins[pin - 1]).getOwner() != this)
+			value = (*_pins[pin - 1]).compute();
+		state = value == Tristate::UNDEFINED ? 'U' : value == Tristate::TRUE ? '1' : '0';
 		std::cout << _name << "=" << state << std::endl;
-		return _value;
+		return value;
 	}
 }

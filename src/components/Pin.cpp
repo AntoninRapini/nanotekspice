@@ -7,13 +7,14 @@
 
 #include "Pin.hpp"
 #include "AComponent.hpp"
+#include <iostream>
 
 namespace nts
 {	
 	Pin::Pin(IComponent *owner, Type type, Tristate value) :
 		_owner(owner), _type(type), _value(value), _isbeingcomputed(false)
 	{
-		_index = ((AComponent *)_owner)->getPins().size();
+		_index = ((AComponent *)_owner)->getPins().size() + 1;
 	}
 
 	Tristate Pin::compute()

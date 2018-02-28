@@ -25,4 +25,8 @@ namespace nts
 	LinkError::LinkError(std::string const &message) : NtsError(message)
 	{
 	}
+
+	SetError::SetError(std::string const &message) : NtsError(message)
+	{
+	}
 }
