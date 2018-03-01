@@ -13,7 +13,7 @@ namespace nts
 	{
 		if (a == Tristate::UNDEFINED || b == Tristate::UNDEFINED)
 			return Tristate::UNDEFINED;
-		if (a == b)
+		if (a == Tristate::TRUE && b == Tristate::TRUE)
 			return Tristate::TRUE;
 		return Tristate::FALSE;
 	}
