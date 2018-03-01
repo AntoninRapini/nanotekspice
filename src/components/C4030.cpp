@@ -6,11 +6,11 @@
 //
 
 #include <iostream>
-#include "C4071.hpp"
+#include "C4030.hpp"
 
 namespace nts
 {
-	C4071::C4071(std::string name) : AComponent(name, "4071")
+	C4030::C4030(std::string name) : AComponent(name, "4030")
 	{
 		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
 		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
@@ -28,13 +28,13 @@ namespace nts
 		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::IGNORED)));
 	}
 
-	C4071::~C4071()
+	C4030::~C4030()
 	{
 	}
 	
-	Tristate C4071::compute(std::size_t pin)
+	Tristate C4030::compute(std::size_t pin)
 	{
-	        if (pin < 1 || pin > _pins.size())
+		if (pin < 1 || pin > _pins.size())
                         throw(ComputeError("Requested pin index is out of range"));
                 if (_pins[pin - 1]->getType() == Pin::Type::IGNORED)
                         throw(ComputeError("Requested pin cannot be computed"));
@@ -44,6 +44,6 @@ namespace nts
                 size_t pinB;
                 pinA = pin == 3 ? 1 : pin == 4 ? 5 : pin == 10 ? 8 : 12;
                 pinB = pin == 3 ? 2 : pin == 4 ? 6 : pin == 10 ? 9 : 13;
-		return _pins[pinA - 1]->compute() || _pins[pinB - 1]->compute();
+		return _pins[pinA - 1]->compute() ^ _pins[pinB - 1]->compute();
 	}
 }

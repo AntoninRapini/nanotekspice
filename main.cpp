@@ -22,7 +22,7 @@ int main()
 
 	((nts::Input &)(*i0)).setPinValue(1, nts::Tristate::TRUE);
 	((nts::Input &)(*i1)).setPinValue(1, nts::Tristate::TRUE);
-	((nts::Input &)(*i2)).setPinValue(1, nts::Tristate::FALSE);
+	((nts::Input &)(*i2)).setPinValue(1, nts::Tristate::UNDEFINED);
 
 	std::vector<nts::IComponent *> components;
 	components.push_back(cs.get());;

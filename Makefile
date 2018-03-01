@@ -18,6 +18,10 @@ SRC	=	main.cpp	\
 		src/components/Clock.cpp	\
 		src/components/LogicGates.cpp	\
 		src/components/C4081.cpp	\
+		src/components/C4001.cpp	\
+		src/components/C4011.cpp	\
+		src/components/C4030.cpp	\
+		src/components/C4071.cpp	\
 		src/exceptions/Exceptions.cpp
 
 OBJ	=	$(SRC:.cpp=.o)

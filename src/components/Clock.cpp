@@ -22,6 +22,6 @@ namespace nts
 	{
 		if (pin != 1)
 			throw(ComputeError("Requested pin index is out of range"));
-		return (*_pins[pin - 1]).getValue();
+		return _pins[pin - 1]->getValue();
 	}
 }

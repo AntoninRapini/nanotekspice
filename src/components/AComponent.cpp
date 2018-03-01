@@ -24,7 +24,7 @@ namespace nts
 	{
 		if (pin < 1 || pin > _pins.size())
 			throw(SetError("Requested pin index is out of range"));
-		(*_pins[pin - 1]).setValue(value);
+		_pins[pin - 1]->setValue(value);
 	}
 	
 	void AComponent::setLink(std::size_t pin, IComponent &other, std::size_t otherpin)
@@ -32,12 +32,11 @@ namespace nts
 		if (pin >= 1 && pin <= _pins.size() &&
 		    otherpin <= ((AComponent &)other)._pins.size())
 		{
-			if ((*_pins[pin - 1]).getOwner() == this)
+			if (_pins[pin - 1]->getOwner() == this)
 			{
-				if ((*_pins[pin - 1]).getType() != Pin::Type::INPUT)
+				if (_pins[pin - 1]->getType() != Pin::Type::INPUT)
 					throw(LinkError("Pin can't be linked to"));
-				if ((*((AComponent &)other)._pins[otherpin - 1]).getType()
-				    != Pin::Type::OUTPUT)
+				if (((AComponent &)other)._pins[otherpin - 1]->getType() != Pin::Type::OUTPUT)
 					throw(LinkError("Pin can't link to other pins"));
 				_pins[pin - 1] = ((AComponent &)other)._pins[otherpin - 1];
 			}
