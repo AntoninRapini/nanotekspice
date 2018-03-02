@@ -64,7 +64,7 @@ namespace nts {
 
     bool Parser::parse_comments(std::smatch &matcher, std::string &line) const {
         if (!std::regex_search(line, matcher, REGEX_COMMENTS))
-            return true;
+            return true; //empty line
 
         line = matcher[1];
 
