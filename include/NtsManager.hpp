@@ -18,14 +18,15 @@ namespace nts
 	class NtsManager
 	{
 	public:
-		NtsManager(const std::map<std::string, const std::unique_ptr<IComponent> &> components);
+		NtsManager() : _components() {};
 		void ChangePinValue(const std::string &name, Tristate value, std::size_t pin = 1);;
 		void DisplayPinValue(const std::string &name, AComponent &component, std::size_t pin = 1);
 		void Display();
 		void Simulate();
 		void Dump();
+		std::map<std::string, std::unique_ptr<IComponent>> &getComponents();
 	private:
-		const std::map<std::string, const std::unique_ptr<IComponent> &> &_components;
+		std::map<std::string, std::unique_ptr<IComponent>> _components;
 	};
 }
 

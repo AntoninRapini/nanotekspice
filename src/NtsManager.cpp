@@ -15,10 +15,6 @@
 
 namespace nts
 {
-	NtsManager::NtsManager(const std::map<std::string,
-			       const std::unique_ptr<IComponent> &> components) : _components(components)
-	{
-	}
 
 	void NtsManager::ChangePinValue(const std::string &name, Tristate value, std::size_t pin)
 	{
@@ -68,7 +64,7 @@ namespace nts
 		{
 			if (((AComponent &)(it->second)).getType().compare("Clock") == 0)
 			{
-				ChangePinValue(it->first, !((AComponent &)(it->second)).getPins()[0]->getValue());
+				ChangePinValue(it->first, static_cast<Tristate>(!((AComponent &)(it->second)).getPins()[0]->getValue()));
 			}
 		}
 	}
@@ -79,5 +75,9 @@ namespace nts
 		{
 			it->second->dump();
 		}
+	}
+
+	std::map<std::string, std::unique_ptr<IComponent>> &NtsManager::getComponents() {
+		return _components;
 	}
 }

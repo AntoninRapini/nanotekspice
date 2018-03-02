@@ -101,6 +101,7 @@ namespace nts {
         if (linked == _chipsets.end() || linker == _chipsets.end())
             throw ParsingError("Undefined reference name to a chipset");
 
+        std::cout << "Tried to link " << linker_name << ":" << linker_pin << " to " << linked_name << ":"<<linked_pin << std::endl;
         linker->second->setLink(linker_pin, *(linked->second.get()), linked_pin);
         return true;
     }
@@ -112,9 +113,7 @@ namespace nts {
         return uint;
     }
 
-    std::map<std::string, std::unique_ptr<IComponent>> &Parser::getChipsets() {
-        if (_state != SUCCESS)
-            throw ParsingError("Components were not parsed yet");
-        return _chipsets;
-    };
+    bool Parser::successed() const {
+        return _state == SUCCESS;
+    }
 }

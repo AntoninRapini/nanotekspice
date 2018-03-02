@@ -6,6 +6,7 @@
 #define CPP_NANOTEKSPICE_HEADER_H
 
 #include "ComponentFactory.hpp"
+#include "NtsManager.hpp"
 
 #include <regex>
 
@@ -15,8 +16,8 @@ namespace nts
     {
 
     public:
-        Parser(ComponentFactory &factory, std::string const &file)
-                : _factory(&factory), _file(file), _state(COMMENTS), _chipsets() {};
+        Parser(ComponentFactory &factory, NtsManager &manager, std::string const &file)
+                : _factory(&factory), _chipsets(manager.getComponents()), _file(file), _state(COMMENTS) {};
         ~Parser() = default;
         Parser(Parser const &) = delete;
         Parser(Parser &) = delete;
@@ -30,14 +31,7 @@ namespace nts
          * @throws  ParsingError if the file cant be parsed
          */
         void run();
-
-        /**
-         * Get all parsed components indexed by chipset names
-         *
-         * @return  the map with all parsed components
-         * @throws  ParsingError if the file is not parsed yet
-         */
-        std::map<std::string, std::unique_ptr<IComponent>> &getChipsets();
+        bool successed() const;
 
     private:
         static char constexpr CONFIG_KW_CHIPSETS[] = ".chipsets:";
@@ -60,9 +54,10 @@ namespace nts
         };
 
         ComponentFactory *_factory;
+        std::map<std::string, std::unique_ptr<IComponent>> *_chipsets_ptr;
+        std::map<std::string, std::unique_ptr<IComponent>> &_chipsets;
         std::string const _file;
         ParserFunc _state;
-        std::map<std::string, std::unique_ptr<IComponent>> _chipsets;
     };
 }
 
