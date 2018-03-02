@@ -30,8 +30,8 @@ namespace nts
         void run();
 
     private:
-        static const char constexpr CONFIG_KW_CHIPSETS[] = ".chipsets:";
-        static const char constexpr CONFIG_KW_LINKS[] = ".links:";
+        static char constexpr CONFIG_KW_CHIPSETS[] = ".chipsets:";
+        static char constexpr CONFIG_KW_LINKS[] = ".links:";
 
         static std::regex const REGEX_COMMENTS;
         static std::regex const REGEX_CHIPSETS;

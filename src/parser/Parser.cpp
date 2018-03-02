@@ -17,8 +17,8 @@
 
 namespace nts {
     //static const references
-    char const constexpr Parser::CONFIG_KW_CHIPSETS[];
-    char const constexpr Parser::CONFIG_KW_LINKS[];
+    char constexpr Parser::CONFIG_KW_CHIPSETS[];
+    char constexpr Parser::CONFIG_KW_LINKS[];
 
     //constants init
     std::regex const Parser::REGEX_COMMENTS("^([^#]+)");
