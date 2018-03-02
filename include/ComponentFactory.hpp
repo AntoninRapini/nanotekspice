@@ -19,8 +19,7 @@ namespace nts
 	{
 	public:
 		ComponentFactory();
-		typedef std::unique_ptr<IComponent> (*CreateFunc)
-			(const std::string &value);
+		typedef std::unique_ptr<IComponent> (*CreateFunc)(const std::string &value);
 		typedef std::map<const std::string, CreateFunc> CreationFuncMap;
 		std::unique_ptr<IComponent> createComponent(const std::string &type,
 		  const std::string &value);
