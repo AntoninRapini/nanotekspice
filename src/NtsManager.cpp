@@ -5,6 +5,7 @@
 // 
 //
 
+#include "LogicGates.hpp"
 #include "NtsManager.hpp"
 #include "Exceptions.hpp"
 #include <stdexcept>
@@ -62,6 +63,13 @@ namespace nts
 		{
 			if (((AComponent &)(it->second)).getType().compare("Output") == 0)
 				it->second->compute();
+		}
+		for (auto it = _components.begin(); it != _components.end(); it++)
+		{
+			if (((AComponent &)(it->second)).getType().compare("Clock") == 0)
+			{
+				ChangePinValue(it->first, !((AComponent &)(it->second)).getPins()[0]->getValue());
+			}
 		}
 	}
 
