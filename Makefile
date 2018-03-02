@@ -6,7 +6,7 @@
 ##
 
 
-CXXFLAGS += -Wall -Werror -Wextra
+CXXFLAGS += -Wall -Werror -Wextra -std=c++11 -g3
 CXXFLAGS += -I include/
 
 SRC	=	main.cpp	\
@@ -22,7 +22,8 @@ SRC	=	main.cpp	\
 		src/components/C4011.cpp	\
 		src/components/C4030.cpp	\
 		src/components/C4071.cpp	\
-		src/exceptions/Exceptions.cpp
+		src/exceptions/Exceptions.cpp \
+		src/parser/Parser.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
