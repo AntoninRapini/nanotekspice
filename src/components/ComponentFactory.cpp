@@ -5,6 +5,7 @@
 // 
 //
 
+#include <iostream>
 #include "ComponentFactory.hpp"
 #include "Input.hpp"
 #include "Output.hpp"
@@ -19,9 +20,9 @@ namespace nts
 {
 	ComponentFactory::CreationFuncMap ComponentFactory::_creationFuncs
 	{
-		{"Input", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Input(value))); }},
-		{"Output", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Output(value))); }},
-		{"Clock", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Clock(value))); }},
+		{"input", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Input(value))); }},
+		{"output", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Output(value))); }},
+		{"clock", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new Clock(value))); }},
 		{"4081", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4081(value))); }},
 		{"4071", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4071(value))); }},
 		{"4011", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4011(value))); }},
@@ -34,9 +35,13 @@ namespace nts
 	}
 
 	std::unique_ptr<IComponent> ComponentFactory::createComponent
-	(const std::string &type, const std::string &value)
+			(const std::string &type, const std::string &name, std::string const &value)
 	{
-		auto func = (_creationFuncs.find(type))->second;
-		return func(value);
+		auto it = (_creationFuncs.find(type));
+
+		if (it == _creationFuncs.end())
+            throw ParsingError("Referred an invalid component type");
+
+		return it->second(name);
 	}
 }
