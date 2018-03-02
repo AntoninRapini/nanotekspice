@@ -26,6 +26,8 @@ namespace nts
 
         /**
          * Perform the parsing of the file field
+         *
+         * @throws  ParsingError if the file cant be parsed
          */
         void run();
 
