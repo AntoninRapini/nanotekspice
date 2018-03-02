@@ -35,7 +35,7 @@ namespace nts {
         std::string line;
 
         while (std::getline(stream, line)) {
-            if (parse_comments(matcher, line))
+            if (!parse_comments(matcher, line))
                 continue;
 
             switch (_state) {
@@ -64,11 +64,11 @@ namespace nts {
 
     bool Parser::parse_comments(std::smatch &matcher, std::string &line) const {
         if (!std::regex_search(line, matcher, REGEX_COMMENTS))
-            return true; //empty line
+            return false; //empty line
 
         line = matcher[1];
 
-        return std::all_of(line.begin(), line.end(), isspace); //return true if only whitespaces
+        return !std::all_of(line.begin(), line.end(), isspace); //return true if only whitespaces
     }
 
     bool Parser::parse_chipsets(std::smatch &matcher, std::string &line) const {
