@@ -5,12 +5,14 @@
 // 
 //
 
+#include <iostream>
 #include "C4081.hpp"
 #include "Input.hpp"
 #include "Output.hpp"
+#include "Parser.hpp"
 #include "ComponentFactory.hpp"
 
-int main()
+int main(int ac, char **args)
 {
 	nts::ComponentFactory cFactory;
 
@@ -37,5 +39,9 @@ int main()
 	components[0]->setLink(6, *components[3], 1);
 	components[4]->setLink(1, *components[0], 4);
 	components[4]->compute(1);
+
+	(void) ac;
+	nts::Parser parser(cFactory, args[1]);
+    parser.run();
 	return (0);
 }

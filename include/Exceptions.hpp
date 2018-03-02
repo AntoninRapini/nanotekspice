@@ -39,6 +39,12 @@ namespace nts
 	public:
 		SetError(std::string const &message);
 	};
+
+	class ParsingError : public NtsError
+	{
+	public:
+		ParsingError(std::string const &message);
+	};
 }
 
 #endif /* !EXCEPTIONS_HPP_ */
