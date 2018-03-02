@@ -23,6 +23,8 @@ namespace nts
 		virtual ~AComponent() {};
 		virtual Tristate compute(std::size_t pin = 1) = 0;
 		const std::vector<std::shared_ptr<Pin>> &getPins() const;
+		const std::string &getType() const;
+		const std::string &getName() const;
 		void setPinValue(std::size_t pin, Tristate value);
 		void setLink(std::size_t pin, IComponent &other, std::size_t otherpin);
 		void dump() const;

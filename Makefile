@@ -16,12 +16,15 @@ SRC	=	main.cpp	\
 		src/components/Input.cpp	\
 		src/components/Output.cpp	\
 		src/components/Clock.cpp	\
+		src/components/True.cpp		\
+		src/components/False.cpp	\
 		src/components/LogicGates.cpp	\
 		src/components/C4081.cpp	\
 		src/components/C4001.cpp	\
 		src/components/C4011.cpp	\
 		src/components/C4030.cpp	\
 		src/components/C4071.cpp	\
+		src/NtsManager.cpp		\
 		src/exceptions/Exceptions.cpp \
 		src/parser/Parser.cpp
 

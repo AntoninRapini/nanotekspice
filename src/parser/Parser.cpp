@@ -7,13 +7,9 @@
 
 #include "Parser.hpp"
 
-#include <string>
+#include "Exceptions.hpp"
 #include <iostream>
 #include <fstream>
-#include <algorithm>
-#include <map>
-#include <vector>
-#include "Exceptions.hpp"
 
 namespace nts {
     //static const references
@@ -29,7 +25,7 @@ namespace nts {
         std::ifstream stream(_file);
 
         if (!stream.is_open())
-            throw(ParsingError("Can't open the file " + _file));
+            throw ParsingError("Can't open the file " + _file);
 
         std::smatch matcher;
         std::string line;
@@ -41,7 +37,7 @@ namespace nts {
             switch (_state) {
                 case COMMENTS:
                     if (line.find(CONFIG_KW_CHIPSETS))
-                        throw(ParsingError("Section chipsets not found"));
+                        throw ParsingError("Section chipsets not found");
 
                     _state = CHIPSETS;
                     break;
@@ -49,17 +45,20 @@ namespace nts {
                     if (!line.find(CONFIG_KW_LINKS))
                         _state = LINKS;
                     else if (!parse_chipsets(matcher, line))
-                        throw(ParsingError("Syntax error while parsing chipsets"));
+                        throw ParsingError("Syntax error while parsing chipsets");
                     break;
                 case LINKS:
                     if (!parse_links(matcher, line))
-                        throw(ParsingError("Syntax error while parsing links"));
+                        throw ParsingError("Syntax error while parsing links");
+                    break;
+                default:
                     break;
             }
         }
 
         if (_state != LINKS)
             throw ParsingError(("Section links not found"));
+        _state = SUCCESS;
     }
 
     bool Parser::parse_comments(std::smatch &matcher, std::string &line) const {
@@ -68,10 +67,10 @@ namespace nts {
 
         line = matcher[1];
 
-        return !std::all_of(line.begin(), line.end(), isspace); //return true if only whitespaces
+        return !std::all_of(line.begin(), line.end(), isspace); //return false if only whitespaces
     }
 
-    bool Parser::parse_chipsets(std::smatch &matcher, std::string &line) const {
+    bool Parser::parse_chipsets(std::smatch &matcher, std::string &line) {
         if (!std::regex_search(line, matcher, REGEX_CHIPSETS))
             return false;
 
@@ -79,7 +78,11 @@ namespace nts {
         std::string name = matcher[2];
         std::string value = matcher[3]; //empty if not specified
 
-        std::cout << "[parser] " << component << " " << name << " " << value << std::endl;
+        if (_chipsets.find(name) != _chipsets.end())
+            throw ParsingError("Found several chipsets with the same name");
+
+        auto chipset = _factory->createComponent(component, name);
+        _chipsets[name] = std::move(chipset);
         return true;
     }
 
@@ -87,12 +90,31 @@ namespace nts {
         if (!std::regex_search(line, matcher, REGEX_LINKS))
             return false;
 
-        std::string component_a = matcher[1];
-        std::string pin_a = matcher[2];
-        std::string component_b = matcher[3];
-        std::string pin_b = matcher[4];
+        std::string linked_name = matcher[1];
+        std::size_t linked_pin = parse_uint(matcher[2]);
+        std::string linker_name = matcher[3];
+        std::size_t linker_pin = parse_uint(matcher[4]);
 
-        std::cout << "[parser] " << component_a << "<->" << pin_a << " | " << component_b << "<->" << pin_b << std::endl;
+        auto linked = _chipsets.find(linked_name);
+        auto linker = _chipsets.find(linker_name);
+
+        if (linked == _chipsets.end() || linker == _chipsets.end())
+            throw ParsingError("Undefined reference name to a chipset");
+
+        linker->second->setLink(linker_pin, *(linked->second.get()), linked_pin);
         return true;
     }
+
+    size_t Parser::parse_uint(std::string string) const {
+        size_t uint;
+        std::istringstream(string) >> uint;
+
+        return uint;
+    }
+
+    std::map<std::string, std::unique_ptr<IComponent>> &Parser::getChipsets() {
+        if (_state != SUCCESS)
+            throw ParsingError("Components were not parsed yet");
+        return _chipsets;
+    };
 }

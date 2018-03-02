@@ -26,22 +26,44 @@ namespace nts
 			throw(SetError("Requested pin index is out of range"));
 		_pins[pin - 1]->setValue(value);
 	}
+
+	const std::string &AComponent::getType() const
+	{
+		return (_componentType);
+	}
+
+	const std::string &AComponent::getName() const
+	{
+		return (_name);
+	}
 	
 	void AComponent::setLink(std::size_t pin, IComponent &other, std::size_t otherpin)
 	{
 		if (pin >= 1 && pin <= _pins.size() &&
 		    otherpin <= ((AComponent &)other)._pins.size())
 		{
-			if (_pins[pin - 1]->getOwner() == this)
+			if (_pins[pin - 1]->getType() == Pin::Type::INPUT && ((AComponent &)other)._pins[otherpin - 1]->getType() == Pin::Type::OUTPUT)
 			{
-				if (_pins[pin - 1]->getType() != Pin::Type::INPUT)
-					throw(LinkError("Pin can't be linked to"));
-				if (((AComponent &)other)._pins[otherpin - 1]->getType() != Pin::Type::OUTPUT)
-					throw(LinkError("Pin can't link to other pins"));
-				_pins[pin - 1] = ((AComponent &)other)._pins[otherpin - 1];
+				if (_pins[pin - 1]->getOwner() == this)
+				{
+					_pins[pin - 1] = ((AComponent &)other)._pins[otherpin - 1];
+				}
+				else
+					throw(LinkError("Pin is already linked"));
+			}
+			else if (_pins[pin - 1]->getType() == Pin::Type::OUTPUT && ((AComponent &)other)._pins[otherpin - 1]->getType() == Pin::Type::INPUT)
+			{
+				try
+				{
+					((AComponent &)other).setLink(otherpin, *this, pin);
+				}
+				catch (const LinkError &e)
+				{
+					throw (LinkError(e.what()));
+				}
 			}
 			else
-				throw(LinkError("Pin is already linked"));
+				throw(LinkError("Pins can't be linked together"));
 		}
 		else
 			throw(LinkError("Requested pin index is out of range"));

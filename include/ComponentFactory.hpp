@@ -9,8 +9,8 @@
 # define COMPONENTFACTORY_HPP_
 
 #include "IComponent.hpp"
-#include <map>
 #include <memory>
+#include <map>
 #include <string>
 
 namespace nts
@@ -20,9 +20,8 @@ namespace nts
 	public:
 		ComponentFactory();
 		typedef std::unique_ptr<IComponent> (*CreateFunc)(const std::string &value);
-		typedef std::map<const std::string, CreateFunc> CreationFuncMap;
-		std::unique_ptr<IComponent> createComponent(const std::string &type,
-		  const std::string &value);
+		typedef std::map<std::string, CreateFunc> CreationFuncMap;
+		std::unique_ptr<IComponent> createComponent(const std::string &type, std::string const &value = "");
 	private:
 		static CreationFuncMap _creationFuncs;
 	};
