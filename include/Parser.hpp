@@ -47,7 +47,7 @@ namespace nts
             LINKS
         };
 
-        ComponentFactory * _factory;
+        ComponentFactory *_factory;
         std::string const _file;
         ParserFunc _state;
     };
