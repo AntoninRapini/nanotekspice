@@ -11,6 +11,7 @@
 #include "LogicGates.hpp"
 #include "Exceptions.hpp"
 #include "Pin.hpp"
+#include <iostream>
 #include <vector>
 #include <memory>
 
@@ -33,6 +34,9 @@ namespace nts
 		std::string _name;
 		std::string _componentType;
 	};
+
+	std::ostream &operator<<(std::ostream &os, Tristate value);
 }
+
 
 #endif /* !ACOMPONENT_HPP_ */

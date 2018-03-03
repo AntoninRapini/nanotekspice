@@ -32,6 +32,7 @@ namespace nts
 				_value = _owner->compute(_index);
 			}
 		}
+		_isbeingcomputed = false;
 		return _value;
 	}
 	

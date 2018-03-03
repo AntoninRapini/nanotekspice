@@ -73,4 +73,11 @@ namespace nts
 	{
 		std::cout << _componentType << " : " << _name << std::endl;
 	}
+
+	std::ostream &operator<<(std::ostream &os, Tristate value)
+	{
+		char c = value == Tristate::UNDEFINED ? 'U' : value == Tristate::TRUE ? '1' : '0';
+		os << c;
+		return os;
+	}
 }

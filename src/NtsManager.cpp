@@ -18,6 +18,7 @@ namespace nts
 
 	void NtsManager::ChangePinValue(const std::string &name, Tristate value, std::size_t pin)
 	{
+		std::cout << name << " " << pin << " " << value << std::endl;
 		try
 		{
 			AComponent &to_change = static_cast<AComponent &>((*_components.at(name)));
@@ -39,17 +40,15 @@ namespace nts
 	(const std::string &name, AComponent &component, std::size_t pin)
 	{
 		Tristate value = component.getPins()[pin - 1]->getValue();
-		char state = value == Tristate::UNDEFINED
-			? 'U' : value == Tristate::TRUE ? '1' : '0';
-                std::cout << name << "=" << state << std::endl;
+                std::cout << name << "=" << value << std::endl;
 	}
 	
 	void NtsManager::Display()
 	{
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (((AComponent &)(it->second)).getType().compare("Output") == 0)
-				DisplayPinValue(it->first, ((AComponent &)(it->second)));
+			if (static_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
+				DisplayPinValue(it->first, static_cast<AComponent &>(*(it->second)));
 		}
 	}
 
@@ -57,14 +56,17 @@ namespace nts
 	{
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (((AComponent &)(it->second)).getType().compare("Output") == 0)
+			if (static_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
+			{
+				static_cast<AComponent &>(*(it->second)).getPins()[0]->setValue(Tristate::UNDEFINED);
 				it->second->compute();
+			}
 		}
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (((AComponent &)(it->second)).getType().compare("Clock") == 0)
+			if (static_cast<AComponent &>(*(it->second)).getType().compare("Clock") == 0)
 			{
-				ChangePinValue(it->first, static_cast<Tristate>(!((AComponent &)(it->second)).getPins()[0]->getValue()));
+				ChangePinValue(it->first, static_cast<Tristate>(!static_cast<AComponent &>(*(it->second)).getPins()[0]->getValue()));
 			}
 		}
 	}
