@@ -15,10 +15,8 @@
 
 namespace nts
 {
-
 	void NtsManager::ChangePinValue(const std::string &name, Tristate value, std::size_t pin)
 	{
-		std::cout << name << " " << pin << " " << value << std::endl;
 		try
 		{
 			AComponent &to_change = static_cast<AComponent &>((*_components.at(name)));
