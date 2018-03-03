@@ -26,7 +26,8 @@ SRC	=	main.cpp	\
 		src/components/C4071.cpp	\
 		src/NtsManager.cpp		\
 		src/exceptions/Exceptions.cpp \
-		src/parser/Parser.cpp
+		src/parser/Parser.cpp	\
+		src/console/ConsoleAnalyser.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

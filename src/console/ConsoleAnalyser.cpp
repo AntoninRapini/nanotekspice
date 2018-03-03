@@ -12,15 +12,20 @@
 namespace nts {
     //reference
     char constexpr ConsoleAnalyser::STATEMENT_DELIMITER;
+    char constexpr ConsoleAnalyser::COMMAND_EXIT[];
+    char constexpr ConsoleAnalyser::COMMAND_DISPLAY[];
+    char constexpr ConsoleAnalyser::COMMAND_SIMULATE[];
+    char constexpr ConsoleAnalyser::COMMAND_LOOP[];
+    char constexpr ConsoleAnalyser::COMMAND_DUMP[];
 
     bool ConsoleAnalyser::parse_options() {
         if (_parsed)
             return false;
 
-        for (int i=1; i < _argc; ++i) {
+        for (size_t i=2; i < _argc; ++i) {
             std::string opt(_args[i]);
-            std::cout << "got " << opt << std::endl;
-            parse_statement(opt);
+            if (!parse_statement(opt))
+                throw ParsingError("Invalid option");
         }
 
         return (_parsed = true);
@@ -29,12 +34,27 @@ namespace nts {
     bool ConsoleAnalyser::init_analyser() {
         if (_init)
             return false;
+        _init = true;
 
+        display_prompt();
         for(std::string line; std::getline(std::cin, line);) {
-            std::cout << "[console] listened " + line << std::endl;
+            if (line == COMMAND_EXIT)
+                break;
+            else if (line == COMMAND_DISPLAY)
+                _manager->Display();
+            else if (line == COMMAND_SIMULATE)
+                _manager->Simulate();
+            else if (line == COMMAND_LOOP)
+                _prompt = false;
+            else if (line == COMMAND_DUMP)
+                _manager->Dump();
+            else if (!parse_statement(line))
+                throw ParsingError("Unknown command");
+
+            display_prompt();
         }
 
-        return (_init = true);
+        return true;
     }
 
     bool ConsoleAnalyser::parse_statement(std::string &line) const {
@@ -65,5 +85,11 @@ namespace nts {
 
         _manager->ChangePinValue(component, parsed);
         return true;
+    }
+
+    void ConsoleAnalyser::display_prompt() const {
+        if (!_prompt)
+            return;
+        std::cout << "> ";
     }
 }

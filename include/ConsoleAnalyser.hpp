@@ -16,7 +16,7 @@ namespace nts {
     class ConsoleAnalyser {
     public:
         ConsoleAnalyser(NtsManager &manager, std::size_t argc, char *args[])
-                : _init(false), _parsed(false), _manager(&manager), _argc(argc), _args(args) {};
+                : _init(false), _parsed(false), _prompt(true), _manager(&manager), _argc(argc), _args(args) {};
         ~ConsoleAnalyser() = default;
         ConsoleAnalyser(ConsoleAnalyser const &) = delete;
         ConsoleAnalyser(ConsoleAnalyser &) = delete;
@@ -28,14 +28,19 @@ namespace nts {
         bool init_analyser();
 
     private:
-        static char constexpr STATEMENT_DELIMITER = ':';
+        static char constexpr STATEMENT_DELIMITER = '=';
+        static char constexpr COMMAND_EXIT[] = "exit";
+        static char constexpr COMMAND_DISPLAY[] = "display";
+        static char constexpr COMMAND_SIMULATE[] = "simulate";
+        static char constexpr COMMAND_LOOP[] = "loop";
+        static char constexpr COMMAND_DUMP[] = "dump";
+
+        bool parse_statement(std::string &line) const;
+        void display_prompt() const;
 
         bool _init;
         bool _parsed;
-
-        bool parse_statement(std::string &line) const;
-        bool parse_option(std::string &line);
-
+        bool _prompt;
         NtsManager * const _manager;
         size_t const _argc;
         char ** _args;
