@@ -25,23 +25,15 @@ namespace nts {
     bool ConsoleAnalyser::loop_mode = false;
 
     bool ConsoleAnalyser::parse_options() {
-        if (_parsed)
-            return false;
-
         for (size_t i=2; i < _argc; ++i) {
             std::string opt(_args[i]);
             if (!parse_statement(opt))
                 throw ParsingError("Invalid option");
         }
-
-        return (_parsed = true);
+        return true;
     }
 
     bool ConsoleAnalyser::init_analyser() {
-        if (_init)
-            return false;
-        _init = true;
-
         handle_sigint();
 
         std::cout << "> ";
@@ -73,7 +65,7 @@ namespace nts {
 
         std::string component = line.substr(0, delimiter_pos);
         line.erase(0, delimiter_pos + 1);
-        char state = (char) std::stoi(line);
+        int state = std::stoi(line);
 
         Tristate parsed;
 
