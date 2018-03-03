@@ -8,6 +8,10 @@
 #include <Exceptions.hpp>
 #include <iostream>
 #include "ConsoleAnalyser.hpp"
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 namespace nts {
     //reference
@@ -17,6 +21,8 @@ namespace nts {
     char constexpr ConsoleAnalyser::COMMAND_SIMULATE[];
     char constexpr ConsoleAnalyser::COMMAND_LOOP[];
     char constexpr ConsoleAnalyser::COMMAND_DUMP[];
+
+    bool ConsoleAnalyser::loop_mode = false;
 
     bool ConsoleAnalyser::parse_options() {
         if (_parsed)
@@ -36,7 +42,9 @@ namespace nts {
             return false;
         _init = true;
 
-        display_prompt();
+        handle_sigint();
+
+        std::cout << "> ";
         for(std::string line; std::getline(std::cin, line);) {
             if (line == COMMAND_EXIT)
                 break;
@@ -45,13 +53,13 @@ namespace nts {
             else if (line == COMMAND_SIMULATE)
                 _manager->Simulate();
             else if (line == COMMAND_LOOP)
-                _prompt = false;
+                start_loop();
             else if (line == COMMAND_DUMP)
                 _manager->Dump();
             else if (!parse_statement(line))
                 throw ParsingError("Unknown command");
 
-            display_prompt();
+            std::cout << "> ";
         }
 
         return true;
@@ -87,9 +95,23 @@ namespace nts {
         return true;
     }
 
-    void ConsoleAnalyser::display_prompt() const {
-        if (!_prompt)
-            return;
-        std::cout << "> ";
+    void ConsoleAnalyser::handle_sigint() {
+        struct sigaction sigIntHandler;
+
+        sigIntHandler.sa_handler = [](int) -> void {
+            std::cout<<std::endl;
+            loop_mode = false;
+        };
+        sigemptyset(&sigIntHandler.sa_mask);
+        sigIntHandler.sa_flags = 0;
+
+        sigaction(SIGINT, &sigIntHandler, nullptr);
+    }
+
+    void ConsoleAnalyser::start_loop() {
+        loop_mode = true;
+
+        while (loop_mode)
+            _manager->Simulate();
     }
 }
