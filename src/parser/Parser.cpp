@@ -101,7 +101,6 @@ namespace nts {
         if (linked == _chipsets.end() || linker == _chipsets.end())
             throw ParsingError("Undefined reference name to a chipset");
 
-        std::cout << "Tried to link " << linker_name << ":" << linker_pin << " to " << linked_name << ":"<<linked_pin << std::endl;
         linker->second->setLink(linker_pin, *(linked->second.get()), linked_pin);
         return true;
     }

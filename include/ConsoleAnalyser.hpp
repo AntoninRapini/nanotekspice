@@ -15,8 +15,8 @@
 namespace nts {
     class ConsoleAnalyser {
     public:
-        ConsoleAnalyser(Parser &parser, NtsManager &manager, std::size_t argc, char *args[])
-                : _manager(&manager), _init(false), _parsed(false), _parser(&parser), _argc(argc), _args(args) {};
+        ConsoleAnalyser(NtsManager &manager, std::size_t argc, char *args[])
+                : _init(false), _parsed(false), _manager(&manager), _argc(argc), _args(args) {};
         ~ConsoleAnalyser() = default;
         ConsoleAnalyser(ConsoleAnalyser const &) = delete;
         ConsoleAnalyser(ConsoleAnalyser &) = delete;
@@ -34,11 +34,11 @@ namespace nts {
         bool _parsed;
 
         bool parse_statement(std::string &line) const;
+        bool parse_option(std::string &line);
 
-        Parser * const _parser;
         NtsManager * const _manager;
         size_t const _argc;
-        char * const _args[];
+        char ** _args;
     };
 }
 

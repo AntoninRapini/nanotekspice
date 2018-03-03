@@ -54,7 +54,6 @@ namespace nts
         };
 
         ComponentFactory *_factory;
-        std::map<std::string, std::unique_ptr<IComponent>> *_chipsets_ptr;
         std::map<std::string, std::unique_ptr<IComponent>> &_chipsets;
         std::string const _file;
         ParserFunc _state;
