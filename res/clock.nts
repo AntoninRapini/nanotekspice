@@ -2,7 +2,7 @@
 #kek
 
 .chipsets:
-true a
+clock a
 output s
 
 .links:

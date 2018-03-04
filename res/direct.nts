@@ -2,7 +2,7 @@
 #kek
 
 .chipsets:
-true a
+input a
 output s
 
 .links:

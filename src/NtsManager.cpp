@@ -60,7 +60,7 @@ namespace nts
 		{
 			if (dynamic_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
 			{
-				dynamic_cast<AComponent &>(*(it->second)).getPins()[0]->setValue(Tristate::UNDEFINED);
+				dynamic_cast<AComponent &>(*(it->second)).getPins()[0]->setNeedComputation(true);
 				it->second->compute();
 			}
 		}

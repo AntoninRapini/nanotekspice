@@ -26,6 +26,7 @@ namespace nts
 		Tristate compute();
 		Tristate getValue() const;
 		Type getType() const;
+		void setNeedComputation(bool value);
 		void setValue(nts::Tristate value);
 		const IComponent *getOwner() const;
 	private:
@@ -34,6 +35,7 @@ namespace nts
 		Tristate _value;
 		size_t _index;
 		bool _isbeingcomputed;
+		bool _needComputation;
 	};
 }
 
