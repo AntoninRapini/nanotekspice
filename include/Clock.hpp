@@ -10,15 +10,15 @@
 
 #include "AComponent.hpp"
 
-namespace nts
-{
-	class Clock : public AComponent
-	{
-	public:
-		Clock(std::string name);
-		~Clock();
-		Tristate compute(std::size_t pin = 1);
-	};
+namespace nts {
+    class Clock : public AComponent {
+    public:
+        Clock(std::string name);
+
+        ~Clock();
+
+        Tristate compute(std::size_t pin = 1);
+    };
 }
 
 #endif /* !CLOCK_HPP_ */

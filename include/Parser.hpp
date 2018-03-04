@@ -12,10 +12,8 @@
 #include <unordered_map>
 #include <fstream>
 
-namespace nts
-{
-    class Parser
-    {
+namespace nts {
+    class Parser {
 
     public:
         Parser(ComponentFactory &factory, NtsManager &manager, std::string const file)
@@ -26,10 +24,13 @@ namespace nts
                   _stream(file) {};
 
         ~Parser() = default;
+
         Parser(Parser const &) = delete;
+
         Parser(Parser &) = delete;
 
         Parser &operator=(Parser const &) = delete;
+
         Parser &operator=(Parser &) = delete;
 
         /**
@@ -38,6 +39,7 @@ namespace nts
          * @throws  ParsingError if the file cant be parsed
          */
         void run();
+
         bool successed() const;
 
     private:
@@ -49,9 +51,13 @@ namespace nts
         static std::regex const REGEX_LINKS;
 
         bool parse_comments(std::smatch &matcher, std::string &line) const;
+
         bool parse_chipsets(std::smatch &matcher, std::string &line);
+
         bool parse_links(std::smatch &matcher, std::string &line);
+
         void parse_error(std::string error);
+
         size_t parse_uint(std::string string) const;
 
         enum ParserFunc {

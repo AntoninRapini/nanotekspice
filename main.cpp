@@ -14,10 +14,9 @@
 #include "Parser.hpp"
 #include "ComponentFactory.hpp"
 
-int main(int ac, char **args)
-{
-	nts::ComponentFactory factory;
-	nts::NtsManager manager;
+int main(int ac, char **args) {
+    nts::ComponentFactory factory;
+    nts::NtsManager manager;
 
     try {
         if (ac < 2)
@@ -30,9 +29,9 @@ int main(int ac, char **args)
         manager.Simulate();
         manager.Display();
         console.init_analyser();
-    } catch (const nts::NtsError& error) {
+    } catch (const nts::NtsError &error) {
         std::cerr << "An error occurred: " << error.what() << std::endl;
         return (84);
     }
-	return (0);
+    return (0);
 }

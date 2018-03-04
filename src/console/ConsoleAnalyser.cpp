@@ -25,18 +25,18 @@ namespace nts {
     bool ConsoleAnalyser::loop_mode = false;
 
     bool ConsoleAnalyser::parse_options() {
-        for (size_t i=2; i < _argc; ++i) {
+        for (size_t i = 2; i < _argc; ++i) {
             std::string opt(_args[i]);
             if (!parse_statement(opt, true))
                 throw ParsingError("Invalid option");
         }
 
         for (const auto &keyset: _manager->getComponents()) {
-            auto component = dynamic_cast<AComponent*>(keyset.second.get());
+            auto component = dynamic_cast<AComponent *>(keyset.second.get());
             bool input = component->getType() == "Input" || component->getType() == "Clock";
 
             if (input && component->getPins().at(0)->getValue() == UNDEFINED)
-                throw ParsingError ("Found chipset(s) without default value");
+                throw ParsingError("Found chipset(s) without default value");
         }
         return true;
     }
@@ -45,7 +45,7 @@ namespace nts {
         handle_sigint();
 
         std::cout << "> ";
-        for(std::string line; std::getline(std::cin, line);) {
+        for (std::string line; std::getline(std::cin, line);) {
             if (line == COMMAND_EXIT)
                 break;
             else if (line == COMMAND_DISPLAY)
@@ -77,7 +77,7 @@ namespace nts {
 
         Tristate parsed;
 
-        switch(state) {
+        switch (state) {
             case true:
                 parsed = TRUE;
                 break;

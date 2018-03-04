@@ -13,18 +13,20 @@
 #include <map>
 #include <string>
 
-namespace nts
-{
-	class ComponentFactory
-	{
-	public:
-		ComponentFactory();
-		typedef std::unique_ptr<IComponent> (*CreateFunc)(const std::string &value);
-		typedef std::map<std::string, CreateFunc> CreationFuncMap;
-		std::unique_ptr<IComponent> createComponent(const std::string &type, std::string const &value = "");
-	private:
-		static CreationFuncMap _creationFuncs;
-	};
+namespace nts {
+    class ComponentFactory {
+    public:
+        ComponentFactory();
+
+        typedef std::unique_ptr<IComponent> (*CreateFunc)(const std::string &value);
+
+        typedef std::map<std::string, CreateFunc> CreationFuncMap;
+
+        std::unique_ptr<IComponent> createComponent(const std::string &type, std::string const &value = "");
+
+    private:
+        static CreationFuncMap _creationFuncs;
+    };
 }
 
 #endif /* !COMPONENTFACTORY_HPP_ */

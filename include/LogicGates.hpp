@@ -10,12 +10,14 @@
 
 #include "IComponent.hpp"
 
-namespace nts
-{
-        Tristate operator&&(Tristate, Tristate);
-        Tristate operator||(Tristate, Tristate);
-	Tristate operator^(Tristate, Tristate);
-	Tristate operator!(Tristate);
+namespace nts {
+    Tristate operator&&(Tristate, Tristate);
+
+    Tristate operator||(Tristate, Tristate);
+
+    Tristate operator^(Tristate, Tristate);
+
+    Tristate operator!(Tristate);
 }
 
 #endif /* !LOGICGATES_HPP_ */

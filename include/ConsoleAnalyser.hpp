@@ -17,14 +17,19 @@ namespace nts {
     public:
         ConsoleAnalyser(NtsManager &manager, std::size_t argc, char *args[])
                 : _manager(&manager), _argc(argc), _args(args) {};
+
         ~ConsoleAnalyser() = default;
+
         ConsoleAnalyser(ConsoleAnalyser const &) = delete;
+
         ConsoleAnalyser(ConsoleAnalyser &) = delete;
 
         ConsoleAnalyser &operator=(ConsoleAnalyser const &) = delete;
+
         ConsoleAnalyser &operator=(ConsoleAnalyser &) = delete;
 
         bool parse_options();
+
         bool init_analyser();
 
     private:
@@ -38,12 +43,14 @@ namespace nts {
         static bool loop_mode;
 
         bool parse_statement(std::string &line, bool option = false) const;
+
         void start_loop();
+
         void handle_sigint();
 
-        NtsManager * const _manager;
+        NtsManager *const _manager;
         size_t const _argc;
-        char ** _args;
+        char **_args;
     };
 }
 

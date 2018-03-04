@@ -10,15 +10,15 @@
 
 #include "AComponent.hpp"
 
-namespace nts
-{
-	class C4013 : public AComponent
-	{
-	public:
-		C4013(std::string name);
-		~C4013();
-		Tristate compute(std::size_t pin = 1);
-	};
+namespace nts {
+    class C4013 : public AComponent {
+    public:
+        C4013(std::string name);
+
+        ~C4013();
+
+        Tristate compute(std::size_t pin = 1);
+    };
 }
 
 #endif /* !C4013_HPP_ */
