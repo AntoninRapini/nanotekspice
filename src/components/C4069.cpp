@@ -39,9 +39,8 @@ namespace nts
                 if (_pins[pin - 1]->getType() == Pin::Type::IGNORED)
                         throw(ComputeError("Requested pin cannot be computed"));
                 if (_pins[pin - 1]->getType() == Pin::Type::INPUT)
-                        return _pins[pin - 1]->compute();
-                //TODO: size_t pinA; unused?
-                //pinA = pin > 7 ? pin + 1 : pin - 1;
-		return !(_pins[pin - 1]->compute());
+			return _pins[pin - 1]->compute();
+		std::size_t pinA = pin > 7 ? pin + 1 : pin - 1;
+		return !(_pins[pinA - 1]->compute());
 	}
 }
