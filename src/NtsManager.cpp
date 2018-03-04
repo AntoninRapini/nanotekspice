@@ -64,7 +64,7 @@ namespace nts
 		{
 			if (static_cast<AComponent &>(*(it->second)).getType().compare("Clock") == 0)
 			{
-				ChangePinValue(it->first, static_cast<Tristate>(!static_cast<AComponent &>(*(it->second)).getPins()[0]->getValue()));
+				static_cast<AComponent &>(*(it->second)).setPinValue(1, !static_cast<AComponent &>(*(it->second)).getPins()[0]->getValue());
 			}
 		}
 	}

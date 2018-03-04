@@ -11,7 +11,7 @@ namespace nts
 {
 	Clock::Clock(std::string name) : AComponent(name, "Clock")
 	{
-		_pins.push_back(std::shared_ptr<Pin>(new Pin(this)));
+		_pins.push_back(std::shared_ptr<Pin>(new Pin(this, Pin::Type::OUTPUT, Tristate::FALSE)));
 	}
 
 	Clock::~Clock()
