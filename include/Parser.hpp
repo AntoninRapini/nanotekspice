@@ -10,6 +10,7 @@
 
 #include <regex>
 #include <unordered_map>
+#include <fstream>
 
 namespace nts
 {
@@ -17,8 +18,13 @@ namespace nts
     {
 
     public:
-        Parser(ComponentFactory &factory, NtsManager &manager, std::string const &file)
-                : _factory(&factory), _chipsets(manager.getComponents()), _unused(), _file(file), _state(COMMENTS) {};
+        Parser(ComponentFactory &factory, NtsManager &manager, std::string const file)
+                : _factory(&factory),
+                  _chipsets(manager.getComponents()),
+                  _unused(), _file(file),
+                  _state(COMMENTS),
+                  _stream(file) {};
+
         ~Parser() = default;
         Parser(Parser const &) = delete;
         Parser(Parser &) = delete;
@@ -45,6 +51,7 @@ namespace nts
         bool parse_comments(std::smatch &matcher, std::string &line) const;
         bool parse_chipsets(std::smatch &matcher, std::string &line);
         bool parse_links(std::smatch &matcher, std::string &line);
+        void parse_error(std::string error);
         size_t parse_uint(std::string string) const;
 
         enum ParserFunc {
@@ -59,6 +66,7 @@ namespace nts
         std::unordered_map<std::string, IComponent *> _unused;
         std::string const _file;
         ParserFunc _state;
+        std::ifstream _stream;
     };
 }
 

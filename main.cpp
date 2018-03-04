@@ -26,7 +26,7 @@ int main(int ac, char **args)
 	parser.run();
 	nts::ConsoleAnalyser console(manager, (size_t) ac, args);
 	console.parse_options();
-        manager.Simulate();
+    manager.Simulate();
 	manager.Display();
 	console.init_analyser();
 	return (0);

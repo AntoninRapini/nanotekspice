@@ -9,7 +9,6 @@
 
 #include "Exceptions.hpp"
 #include <iostream>
-#include <fstream>
 
 namespace nts {
     //static const references
@@ -22,34 +21,31 @@ namespace nts {
     std::regex const Parser::REGEX_LINKS("^(\\S+):(\\d+)[^\\S]*(\\S+):(\\d+)$");
 
     void Parser::run() {
-        std::ifstream stream(_file);
-
-        if (!stream.is_open())
+        if (!_stream.is_open())
             throw ParsingError("Can't open the file " + _file);
 
         std::smatch matcher;
         std::string line;
 
-        while (std::getline(stream, line)) {
+        while (std::getline(_stream, line)) {
             if (!parse_comments(matcher, line))
                 continue;
 
             switch (_state) {
                 case COMMENTS:
                     if (line.find(CONFIG_KW_CHIPSETS))
-                        throw ParsingError("Section chipsets not found");
-
+                        parse_error("Section chipsets not found");
                     _state = CHIPSETS;
                     break;
                 case CHIPSETS:
                     if (!line.find(CONFIG_KW_LINKS))
                         _state = LINKS;
                     else if (!parse_chipsets(matcher, line))
-                        throw ParsingError("Syntax error while parsing chipsets");
+                        parse_error("Syntax error while parsing chipsets");
                     break;
                 case LINKS:
                     if (!parse_links(matcher, line))
-                        throw ParsingError("Syntax error while parsing links");
+                        parse_error("Syntax error while parsing links");
                     break;
                 default:
                     break;
@@ -57,10 +53,11 @@ namespace nts {
         }
 
         if (_state != LINKS)
-            throw ParsingError(("Section links not found"));
+            parse_error(("Section links not found"));
         else if (!_unused.empty())
-            throw ParsingError("Unused chipset(s) found");
+            parse_error("Unused chipset(s) found");
         _state = SUCCESS;
+        _stream.close();
     }
 
     bool Parser::parse_comments(std::smatch &matcher, std::string &line) const {
@@ -102,12 +99,19 @@ namespace nts {
         auto linker = _chipsets.find(linker_name);
 
         if (linked == _chipsets.end() || linker == _chipsets.end())
-            throw ParsingError("Undefined reference name to a chipset");
+            parse_error("Undefined reference name to a chipset");
 
         linker->second->setLink(linker_pin, *(linked->second.get()), linked_pin);
-        _unused.erase(linked_name);
-        _unused.erase(linker_name);
+        if (_unused.find(linked_name) != _unused.end())
+            _unused.erase(linked_name);
+        if (_unused.find(linker_name) != _unused.end())
+            _unused.erase(linker_name);
         return true;
+    }
+
+    void Parser::parse_error(std::string error) {
+        _stream.close();
+        throw ParsingError(error);
     }
 
     size_t Parser::parse_uint(std::string string) const {
