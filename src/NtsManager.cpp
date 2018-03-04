@@ -15,13 +15,17 @@
 
 namespace nts
 {
-	void NtsManager::ChangePinValue(const std::string &name, Tristate value, std::size_t pin)
+	void NtsManager::ChangePinValue
+	(const std::string &name, Tristate value, std::size_t pin, bool startup)
 	{
 		try
 		{
-			AComponent &to_change = static_cast<AComponent &>((*_components.at(name)));
+			AComponent &to_change = dynamic_cast<AComponent &>((*_components.at(name)));
 			if (to_change.getType().compare("Input") != 0)
-				throw (SetError("Requested component is not modifiable"));
+			{
+				if (startup && to_change.getType().compare("Clock") != 0)
+					throw (SetError("Requested component is not modifiable"));
+			}
 			to_change.setPinValue(pin, value);
 		}
 		catch (const std::out_of_range &e)
@@ -45,8 +49,8 @@ namespace nts
 	{
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (static_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
-				DisplayPinValue(it->first, static_cast<AComponent &>(*(it->second)));
+			if (dynamic_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
+				DisplayPinValue(it->first, dynamic_cast<AComponent &>(*(it->second)));
 		}
 	}
 
@@ -54,17 +58,17 @@ namespace nts
 	{
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (static_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
+			if (dynamic_cast<AComponent &>(*(it->second)).getType().compare("Output") == 0)
 			{
-				static_cast<AComponent &>(*(it->second)).getPins()[0]->setValue(Tristate::UNDEFINED);
+				dynamic_cast<AComponent &>(*(it->second)).getPins()[0]->setValue(Tristate::UNDEFINED);
 				it->second->compute();
 			}
 		}
 		for (auto it = _components.begin(); it != _components.end(); it++)
 		{
-			if (static_cast<AComponent &>(*(it->second)).getType().compare("Clock") == 0)
+			if (dynamic_cast<AComponent &>(*(it->second)).getType().compare("Clock") == 0)
 			{
-				static_cast<AComponent &>(*(it->second)).setPinValue(1, !static_cast<AComponent &>(*(it->second)).getPins()[0]->getValue());
+				dynamic_cast<AComponent &>(*(it->second)).setPinValue(1, !dynamic_cast<AComponent &>(*(it->second)).getPins()[0]->getValue());
 			}
 		}
 	}

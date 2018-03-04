@@ -18,7 +18,7 @@ namespace nts
 	class NtsManager
 	{
 	public:
-		void ChangePinValue(const std::string &name, Tristate value, std::size_t pin = 1);;
+		void ChangePinValue(const std::string &name, Tristate value, std::size_t pin = 1, bool startup = false);
 		void DisplayPinValue(const std::string &name, AComponent &component, std::size_t pin = 1);
 		void Display();
 		void Simulate();
