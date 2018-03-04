@@ -6,6 +6,11 @@
 //
 
 #include <iostream>
+#include <C4008.hpp>
+#include <C4013.hpp>
+#include <C4069.hpp>
+#include <True.hpp>
+#include <False.hpp>
 #include "ComponentFactory.hpp"
 #include "Input.hpp"
 #include "Output.hpp"
@@ -27,7 +32,13 @@ namespace nts
 		{"4071", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4071(value))); }},
 		{"4011", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4011(value))); }},
 		{"4030", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4030(value))); }},
-		{"4001", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4001(value))); }}
+		{"4001", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4001(value))); }},
+		{"4008", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4008(value))); }},
+		{"4013", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4013(value))); }},
+		{"4069", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new C4069(value))); }},
+        {"true", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new True(value))); }},
+        {"false", [](const std::string &value) -> std::unique_ptr<IComponent> { return (std::unique_ptr<IComponent>(new False(value))); }}
+
 	};
 	
 	ComponentFactory::ComponentFactory()
