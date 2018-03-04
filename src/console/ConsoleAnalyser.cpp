@@ -96,16 +96,9 @@ namespace nts {
     }
 
     void ConsoleAnalyser::handle_sigint() {
-        struct sigaction sigIntHandler;
-
-        sigIntHandler.sa_handler = [](int) -> void {
-            std::cout<<std::endl;
+        signal(SIGINT, [](int) -> void {
             loop_mode = false;
-        };
-        sigemptyset(&sigIntHandler.sa_mask);
-        sigIntHandler.sa_flags = 0;
-
-        sigaction(SIGINT, &sigIntHandler, nullptr);
+        });
     }
 
     void ConsoleAnalyser::start_loop() {
