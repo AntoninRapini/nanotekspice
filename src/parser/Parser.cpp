@@ -58,6 +58,8 @@ namespace nts {
 
         if (_state != LINKS)
             throw ParsingError(("Section links not found"));
+        else if (!_unused.empty())
+            throw ParsingError("Unused chipset(s) found");
         _state = SUCCESS;
     }
 
@@ -83,10 +85,11 @@ namespace nts {
 
         auto chipset = _factory->createComponent(component, name);
         _chipsets[name] = std::move(chipset);
+        _unused[name] = chipset.get();
         return true;
     }
 
-    bool Parser::parse_links(std::smatch &matcher, std::string &line) const {
+    bool Parser::parse_links(std::smatch &matcher, std::string &line) {
         if (!std::regex_search(line, matcher, REGEX_LINKS))
             return false;
 
@@ -102,6 +105,8 @@ namespace nts {
             throw ParsingError("Undefined reference name to a chipset");
 
         linker->second->setLink(linker_pin, *(linked->second.get()), linked_pin);
+        _unused.erase(linked_name);
+        _unused.erase(linker_name);
         return true;
     }
 

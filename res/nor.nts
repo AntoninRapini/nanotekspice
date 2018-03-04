@@ -6,6 +6,7 @@ input		a
 input		b
 output		s
 4001		gate
+input      k
 
 .links:
 a:1		gate:1
