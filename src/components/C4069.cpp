@@ -40,8 +40,8 @@ namespace nts
                         throw(ComputeError("Requested pin cannot be computed"));
                 if (_pins[pin - 1]->getType() == Pin::Type::INPUT)
                         return _pins[pin - 1]->compute();
-                size_t pinA;
-                pinA = pin > 7 ? pin + 1 : pin - 1;
+                //TODO: size_t pinA; unused?
+                //pinA = pin > 7 ? pin + 1 : pin - 1;
 		return !(_pins[pin - 1]->compute());
 	}
 }

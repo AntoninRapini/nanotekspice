@@ -40,10 +40,12 @@ namespace nts
 			throw(ComputeError("Requested pin cannot be computed"));
 		if (_pins[pin - 1]->getType() == Pin::Type::INPUT)
 			return _pins[pin - 1]->compute();
-		Tristate CL = _pins[pin == 1 || pin == 2 ? 2 : 10];
-		Tristate R = _pins[pin == 1 || pin == 2 ? 3 : 9];
-		Tristate D = _pins[pin == 1 || pin == 2 ? 4 : 8];
-		Tristate S = _pins[pin == 1 || pin == 2 ? 5 : 7];
+
+		Tristate CL = _pins[pin == 1 || pin == 2 ? 2 : 10]->getValue(); //TODO: j'ai mis ->getValue, jsp ce que tu voulais ;)
+		Tristate R = _pins[pin == 1 || pin == 2 ? 3 : 9]->getValue();
+		Tristate D = _pins[pin == 1 || pin == 2 ? 4 : 8]->getValue();
+		Tristate S = _pins[pin == 1 || pin == 2 ? 5 : 7]->getValue();
+
 		if (R == Tristate::UNDEFINED || S == Tristate::UNDEFINED)
 			return Tristate::UNDEFINED;
 		if (R == Tristate::TRUE || S == Tristate::TRUE)
@@ -64,6 +66,6 @@ namespace nts
 		}
 		else if (D == Tristate::UNDEFINED || CL == Tristate::UNDEFINED)
 			return Tristate::UNDEFINED;
-		return (_pins[pin - 1].getValue());
+		return (_pins[pin - 1]->getValue());
 	}
 }
