@@ -27,8 +27,16 @@ namespace nts {
     bool ConsoleAnalyser::parse_options() {
         for (size_t i=2; i < _argc; ++i) {
             std::string opt(_args[i]);
-            if (!parse_statement(opt))
+            if (!parse_statement(opt, true))
                 throw ParsingError("Invalid option");
+        }
+
+        for (const auto &keyset: _manager->getComponents()) {
+            auto component = dynamic_cast<AComponent*>(keyset.second.get());
+            bool input = component->getType() == "Input" || component->getType() == "Clock";
+
+            if (input && component->getPins().at(0)->getValue() == UNDEFINED)
+                throw ParsingError ("Found chipset(s) without default value");
         }
         return true;
     }
@@ -57,7 +65,7 @@ namespace nts {
         return true;
     }
 
-    bool ConsoleAnalyser::parse_statement(std::string &line) const {
+    bool ConsoleAnalyser::parse_statement(std::string &line, bool option) const {
         size_t delimiter_pos = line.find(STATEMENT_DELIMITER);
 
         if (delimiter_pos == std::string::npos)
@@ -83,7 +91,7 @@ namespace nts {
                 throw ParsingError("Invalid command statement found");
         }
 
-        _manager->ChangePinValue(component, parsed);
+        _manager->ChangePinValue(component, parsed, 1, option);
         return true;
     }
 

@@ -37,7 +37,7 @@ namespace nts {
 
         static bool loop_mode;
 
-        bool parse_statement(std::string &line) const;
+        bool parse_statement(std::string &line, bool option = false) const;
         void start_loop();
         void handle_sigint();
 
