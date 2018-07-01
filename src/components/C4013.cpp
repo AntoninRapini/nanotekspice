@@ -37,15 +37,14 @@ namespace nts {
         if (_pins[pin - 1]->getType() == Pin::Type::INPUT)
             return _pins[pin - 1]->compute();
 
-        Tristate CL = _pins[pin == 1 || pin == 2 ? 2
-                                                 : 10]->getValue(); //TODO: j'ai mis ->getValue, jsp ce que tu voulais ;)
+        Tristate CL = _pins[pin == 1 || pin == 2 ? 2 : 10]->getValue();
         Tristate R = _pins[pin == 1 || pin == 2 ? 3 : 9]->getValue();
         Tristate D = _pins[pin == 1 || pin == 2 ? 4 : 8]->getValue();
         Tristate S = _pins[pin == 1 || pin == 2 ? 5 : 7]->getValue();
 
         if (R == Tristate::UNDEFINED || S == Tristate::UNDEFINED)
             return Tristate::UNDEFINED;
-        if (R == Tristate::TRUE || S == Tristate::TRUE) {
+        if (R == Tristate::TRUE && S == Tristate::TRUE) {
             _pins[pin == 1 || pin == 2 ? 0 : 12]->setValue(Tristate::TRUE);
             _pins[pin == 1 || pin == 2 ? 1 : 11]->setValue(Tristate::TRUE);
             return Tristate::TRUE;

@@ -10,14 +10,17 @@
 
 #include "AComponent.hpp"
 
-namespace nts {
-    class C4514 : public AComponent {
+namespace nts
+{
+    class C4514 : public AComponent
+    {
     public:
         C4514(std::string name);
-
         ~C4514();
-
         Tristate compute(std::size_t pin = 1);
+    private:
+        static std::array<size_t, 16> OutputPins;
+        int _pinToCompute;
     };
 }
 

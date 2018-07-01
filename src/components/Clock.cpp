@@ -17,7 +17,17 @@ namespace nts {
 
     Tristate Clock::compute(std::size_t pin) {
         if (pin != 1)
-            throw (ComputeError("Requested pin index is out of range"));
+        {
+            if (pin == 0)
+                _pins[pin -1]->setValue(!_pins[pin - 1]->getValue());
+            else if (pin == 2)
+                _pins[pin - 1]->setValue(Tristate::TRUE);
+            else if (pin == 3)
+                _pins[pin - 1]->setValue(Tristate::FALSE);
+            else
+                throw (ComputeError("Requested pin index is out of range"));
+            return Tristate::UNDEFINED;
+        }
         return _pins[pin - 1]->getValue();
     }
 }
