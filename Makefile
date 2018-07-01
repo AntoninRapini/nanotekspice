@@ -29,6 +29,7 @@ SRC	=	main.cpp	\
 		src/components/C4008.cpp	\
 		src/components/C4514.cpp	\
 		src/components/C4040.cpp	\
+		src/components/C4017.cpp	\
 		src/NtsManager.cpp		\
 		src/exceptions/Exceptions.cpp \
 		src/parser/Parser.cpp	\
